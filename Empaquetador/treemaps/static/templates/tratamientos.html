@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+	{% load static %}
+	{% get_static_prefix as STATIC_PREFIX %}
+	<meta charset="UTF-8">
+	<title>Tree maps</title>
+
+	<!-- Modal -->
+	<link rel="stylesheet" href="{{STATIC_PREFIX}}css/base.css">
+	<link rel="stylesheet" href="{{STATIC_PREFIX}}css/estilos.css">
+
+	<script language="javascript" type="text/javascript" src="{{STATIC_PREFIX}}js/jquery-2.0.3.js"></script>
+	<script language="javascript" type="text/javascript" src="{{STATIC_PREFIX}}js/bootstrap.js"></script>
+
+	<script language="javascript" type="text/javascript" src="{{STATIC_PREFIX}}js/jit-yc.js"></script>
+	<script language="javascript" type="text/javascript" src="{{STATIC_PREFIX}}js/codigo.js"></script>
+	<!-- Tablas -->
+	<script language="javascript" type="text/javascript" src="{{STATIC_PREFIX}}js/TS.js"></script>
+	<script type="text/javascript">
+		function init(){
+			var Table1Sorter = new TSorter;
+				Table1Sorter.init('myTable');
+		}
+		window.onload = init;
+	</script>
+	<script>
+    	$( document ).ready(function() {
+    		function isEmpty(ob){
+				for(var i in ob){ return false;}
+				return true;
+			}
+    		var obj = {{filtros|safe}};
+    		var validacion = isEmpty(obj);
+    		if(validacion == false){
+    			var prod = String(obj.prod);
+    			$('#prod').val(prod);
+    		}
+		});
+    </script>
+    <script type="text/javascript">
+
+		var tableToExcel = (function() {
+		  var uri = 'data:application/vnd.ms-excel;base64,'
+		    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+		    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+		    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+		  return function(table, name) {
+		    if (!table.nodeType) table = document.getElementById(table)
+		    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+		    window.location.href = uri + base64(format(template, ctx))
+		  }
+		})()
+	</script>
+
+</head>
+<body onload="listas({{filtros}});">
+<section id="encabezado">
+	<section class="heder">
+		<img src="{{STATIC_PREFIX}}img/logo.png"  id="gru">
+	</section>
+	<section class="heder" id="filtros">
+		<article>
+			<h1 id="h1_pat">Esquemas de tratamientos reportados</h1>
+		</article>
+		<article>
+			<form action="" method="post">{% csrf_token %}
+				<label for="prod">Tipo de producto</label>
+				<select name="prod" id="prod">
+					<option value="">Todos los productos</option>
+					<option value="PROD" selected="selected">Producto</option>
+					<option value="CLASE">Clase</option>
+					<option value="CLASE + PROD">Clase + producto</option>					
+				</select>	     		
+				<input type="submit" class="theme button white" value="Aplicar filtros"/>
+				<input type="button" class="theme button white" value="Exportar datos" onclick="tableToExcel('resumen', 'resumen')" />
+			</form>
+		</article>		
+	</section>
+	<section class="home">
+		<a href="/"><img src="{{STATIC_PREFIX}}img/back.png" id="home" onclick="history.back(0);"></a>
+	</section>
+	<section class="heder" id="exportacion">
+		<article>
+			<img src="{{STATIC_PREFIX}}img/logo_cpp.png" id="cpp">
+		</article>
+		<article>
+			<a href="http://www.cppconsultingnet.biz" target="_blank">cppconsultingnet.biz</a>
+		</article>
+	</section>
+</section>
+<div id="container">
+	<table  id="resumen" class="tablesorter">
+		<thead>
+		<tr>
+			<th>Tratamiento</th>
+			<th>Clase</th>
+			<th>Porcentaje</th>
+			<th>Menciones</th>
+			<th>Frecuencia</th>
+		</tr>
+		</thead>
+		<tbody>
+			{% for item in lista %}
+				<tr>
+					<td>{{item.tratamiento}}
+						{% if item.tratamiento == 'Parche de lidocaína' %}
+							<i class="icon-flag"></i>
+						{% endif %}	
+						{% if item.tratamiento == 'Parche de buprenorfina' %}
+							<i class="icon-flag"></i>
+						{% endif %}							
+					</td>
+					<td>{{item.clase}}</td>
+					<td>{{item.promedio|floatformat:"1"}}%</td>
+					<td>{{item.menciones}}</td>
+					<td>{{item.porcentaje_menciones|floatformat:"2"}}%</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+</body>
+</html>

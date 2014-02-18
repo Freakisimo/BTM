@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html lang="es-MX">
+<head>
+	{% load static %}
+	{% get_static_prefix as STATIC_PREFIX %}
+	<meta charset="UTF-8">
+	<title>Inicio</title>
+	<link rel="stylesheet" href="{{STATIC_PREFIX}}css/index.css">
+</head>
+<body>
+
+	<section id="encabezado">
+		<section>
+			<img id="gru" src="{{STATIC_PREFIX}}img/logo.gif" alt="">
+		</section>
+		<section id="titulo">
+			<h1>Buying Process</h1> 
+			<h2>Cuantitativo</h2> 
+			<h2>Transtec / Versatis</h2> 
+		</section>
+		<section>
+			<img id="cpp" src="{{STATIC_PREFIX}}img/logo_cpp.png" alt=""> 
+		</section>
+	</section>
+
+	<section id="cuerpo">
+		<section>
+			<span>Segmentación de mercado</span>
+			<a href="/treemap">			
+				<img class="vinculo" src="{{STATIC_PREFIX}}img/treemap.png" alt="">
+			</a>
+		</section>
+		<section>
+			<span>Esquemas de tratamiento por segmento</span>
+			<a href="/etps">
+
+				<img class="vinculo" src="{{STATIC_PREFIX}}img/inte.png" alt="">
+			</a>
+		</section>
+	</section>
+
+</body>
+</html>

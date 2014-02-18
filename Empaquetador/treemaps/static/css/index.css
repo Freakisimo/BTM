@@ -1,0 +1,118 @@
+body
+{
+	width: 100%;
+	margin: 0;
+	background-image:url("../img/fondo6.png");
+	background-size:100% 135%;
+	background-repeat:no-repeat;
+	font-family: "Trebuchet MS", Helvetica, sans-serif;
+	text-align: center;
+}
+
+h1
+{
+	font-size: 1.8em;
+	text-align: center;
+	color:green;
+	font-weight:bold;
+	margin:0;
+	padding: 0;
+}
+h2
+{
+	font-size: 1.2em;
+	text-align: center;
+	color:green;
+	font-weight:bold;
+	margin:0;
+	padding: 0;
+}
+
+a
+{
+	background: rgba(76, 89, 82, 0.1);
+	border-color: white;
+	border-radius: 0.5em;
+	border-style: groove;
+	/*color: white;*/
+	display: inline-block;
+	margin: 0.5em 0 1.5em 0;
+	text-decoration: none;
+	transition: all 0.5s ease;
+	-webkit-transition: all 0.5s ease;
+}
+
+a:hover
+{
+	background: white;
+	/*color: black;*/
+	border-style: ridge;
+	box-shadow: 10px 10px 5px #888888;
+	-webkit-transform: scale(1.05);
+	transform: scale(1.05);
+}
+
+/*Encabezado*/
+
+#encabezado
+{
+	width: 100%;
+	margin: 0;
+}
+
+#encabezado section
+{
+	display: inline-block;
+	vertical-align: top;
+	padding: 0 2em 0 2em;
+}
+
+#titulo
+{
+	padding: 4em 0 0 0;
+	margin:1em 0 0 0;
+	width: 40%;
+}
+
+#gru
+{
+  padding: 1.5em 0 0 0;
+  width: 130px;
+}
+
+#cpp
+{
+  padding-top: 1em;
+  margin-right: 0.5em;
+  width: 80px;
+}
+
+/*Cuerpo*/
+
+#cuerpo
+{
+	margin:1em 0 0 0;
+}
+
+#cuerpo section
+{
+	display: inline-block;
+	vertical-align: top;
+	width: 35%;
+	padding: 2em 2em 0 0;	
+}
+
+img.vinculo
+{
+  width: 100%;
+  height: 300px;
+}
+
+
+section span{
+	font-size: 1.2em;
+	width: 100%;
+	display: block;
+	color: green;
+}
+

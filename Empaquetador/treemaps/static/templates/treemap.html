@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+	{% load static %}
+	{% get_static_prefix as STATIC_PREFIX %}
+	<meta charset="UTF-8">
+	<title>Tree maps</title>
+	<link rel="stylesheet" href="{{STATIC_PREFIX}}css/base.css">
+	<link rel="stylesheet" href="{{STATIC_PREFIX}}css/estilos.css">
+	<!--<link rel="stylesheet" href="{{STATIC_PREFIX}}css/bootstrap.css">-->
+	<script language="javascript" type="text/javascript" src="{{STATIC_PREFIX}}js/html5.js"></script>
+	<script language="javascript" type="text/javascript" src="{{STATIC_PREFIX}}js/jquery-2.0.3.js"></script>
+	<script language="javascript" type="text/javascript" src="{{STATIC_PREFIX}}js/jit-yc.js"></script>
+	<script language="javascript" type="text/javascript" src="{{STATIC_PREFIX}}js/codigo.js"></script>
+	<!-- Graficas -->
+	<script src="{{STATIC_PREFIX}}js/highcharts.js"></script>
+	<script src="{{STATIC_PREFIX}}js/exporting.js"></script>
+	<script>
+	    $(function () {
+        $('#overlay').highcharts({
+            chart: {
+                type: 'column'
+            },
+            xAxis: {
+                categories: [
+                    ''
+                ]
+            },
+			yAxis: {
+				max: 100,
+				title: {
+                	enabled: true,
+                	text: '%'
+            	}
+			},
+            plotOptions: {
+	            series: {
+	            	animation: {
+	                    duration: 2000
+	                },
+	                dataLabels: {
+	                    enabled: true,
+	                    format: '{y} %',
+	                    verticalAlign: 'bottom'
+					}
+				}
+	        },
+            title: {
+                text: 'Mercado de oportunidad'
+            },
+            tooltip: {
+				enabled: false
+			},
+            series: [{
+                name: 'Lidocaina',
+                data: [49.9],
+                color: '#70ad47'
+            },{
+                name: 'Buprenorfina',
+                data: [49.9],
+                color: '#a9d08e'
+            }]
+        });
+    });
+    </script>
+    <script>
+    	$( document ).ready(function() {
+    		function isEmpty(ob){
+				for(var i in ob){ return false;}
+				return true;
+			}
+
+    		var obj = {{filtros|safe}};
+    		var validacion = isEmpty(obj);
+    		if(validacion == false){
+    			var mercado = String(obj.mercado);
+    			var especialidad = String(obj.espe);
+    			$('#mercado').val(mercado);
+				$('#especialidad').val(especialidad);
+    		}
+
+    		
+		});
+    </script>
+    <script type="text/javascript">
+
+		var tableToExcel = (function() {
+		  var uri = 'data:application/vnd.ms-excel;base64,'
+		    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+		    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+		    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+		  return function(table, name) {
+		    if (!table.nodeType) table = document.getElementById(table)
+		    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+		    window.location.href = uri + base64(format(template, ctx))
+		  }
+		})()
+	</script>
+
+</head>
+<body onload="init({{lista}});">
+<section id="encabezado">
+	<section class="heder"><img src="{{STATIC_PREFIX}}img/logo.gif" id="gru"></section>
+	<section class="heder" id="filtros">
+		<article><h1>Segmentación de mercado</h1></article>
+		<article>
+			<form action="" method="post">{% csrf_token %}
+				<!--<label for="paia">Mercado</label>
+    			<select name="pais" id="pais">
+    				<option value="">Mercado completo</option>
+    				<option value="MEXICO">México</option>
+    				<option value="COLOMBIA">Colombia</option>
+    				<option value="VENEZUELA">Venezuela</option>
+    			</select>-->
+    			<label for="mercado">Mercado</label>
+    			<select name="mercado" id="mercado">
+    				<option value="" selected="selected">Mercado completo</option>
+    				<option value="mex_col">México/Colombia</option>
+    				<option value="col_ven">Colombia/Venezuela</option>
+    			</select>
+	     		<label for="especialidad">Especialidad </label>
+	         	<select name="especialidad" id="especialidad">
+	         		<option value="" selected="selected">Todas las especialidades</option>
+    				<option value="ALGOLOGO">Algólogo</option>
+    				<option value="GENERAL">Médico general</option>
+    				<option value="INTERNISTA">Médico internista</option>
+    				<option value="ONCOLOGO">Oncólogo</option>
+    				<option value="TRAUMATOLOGO / ORTOPEDISTA">Traumatólogo/Ortopedista</option>        		
+    			</select>
+				<input type="submit" class="theme button white" value="Aplicar filtros"/>
+				<input type="button" class="theme button white" value="Exportar datos" onclick="tableToExcel('resumen', 'resumen')" />				
+			</form>
+		</article>
+		<article id="ruta_nav">
+			<label for="nivel">Navegación</label>
+			<input id="nivel" type="text" readonly="readonly">
+		</article>
+	</section>
+	<section class="home">
+		<a href="/"><img src="{{STATIC_PREFIX}}img/home1.png" id="home"></a>
+	</section>
+	<section class="heder" id="exportacion">
+		<article>			
+			<img src="{{STATIC_PREFIX}}img/logo_cpp.png" id="cpp">
+		</article>
+		<article><a href="http://www.cppconsultingnet.biz" target="_blank">cppconsultingnet.biz</a></article>
+	</section>
+</section>
+<div id="container">
+	<div id="center-container">
+		<div id="infovis"></div>
+	</div>
+</div>
+
+<div id="overlay">
+<!--	<div id="chart"></div>-->
+</div>
+<table style="display:none" id="resumen">
+	<tr>
+		<th>Agudo/Cronico</th>
+		<th>Tipo de dolot</th>
+		<th>Severidad de dolor</th>
+		<th>Onco/No onco</th>
+		<th>Sexo/Grupo etario</th>
+		<th>Peso</th>
+		<th>Bupreborfina</th>
+		<th>Lidocaina</th>
+	</tr>
+{% for item in resumen %}
+	<tr>
+		<td>{{item.nivel_1}}</td>
+		<td>{{item.nivel_2}}</td>
+		<td>{{item.nivel_3}}</td>
+		<td>{{item.nivel_4}}</td>
+		<td>{{item.name}}</td>
+		<td>{{item.valor}}</td>
+		<td>{{item.bupre}}</td>
+		<td>{{item.lido}}</td>
+
+	</tr>
+	
+{% endfor %}
+</table>
+</body>
+
+<!--
+
+* N/A (No darle importancia)
+* Sin porcentaje se vuela
+* Css tablas strip,verde o azul
+* Logo y pagina de cpp
+* Leyendas de oncologico y no oncologico dentro del recuadro (No se salga) 
+
+-->
+</html>
